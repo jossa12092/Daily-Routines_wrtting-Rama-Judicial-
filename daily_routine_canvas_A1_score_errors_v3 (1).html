@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Daily Routine – Writing Practice (A1)</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f6fb;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #headerCanvas {
+      margin-top: 10px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .container {
+      margin-top: 15px;
+      max-width: 1000px;
+      width: 95%;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 800px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 20px;
+      color: #23395d;
+    }
+
+    .instructions {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 220px;
+      resize: vertical;
+      padding: 10px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: 1px solid #c7cfe8;
+      box-sizing: border-box;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #3f6df6;
+      box-shadow: 0 0 0 2px rgba(63, 109, 246, 0.25);
+    }
+
+    .buttons {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.2s ease;
+    }
+
+    button.primary {
+      background: #3f6df6;
+      color: white;
+      box-shadow: 0 2px 6px rgba(63, 109, 246, 0.5);
+    }
+
+    button.secondary {
+      background: #e3e7ff;
+      color: #23395d;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    button:active {
+      transform: translateY(0px);
+      box-shadow: none;
+    }
+
+    .feedback-box {
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #f5f8ff;
+      border: 1px solid #d5ddff;
+      font-size: 14px;
+      max-height: 380px;
+      overflow-y: auto;
+    }
+
+    .feedback-title {
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #23395d;
+    }
+
+    .feedback-section {
+      margin-bottom: 8px;
+    }
+
+    .feedback-section strong {
+      color: #23395d;
+    }
+
+    .tips-list {
+      font-size: 13px;
+      margin: 5px 0 0 15px;
+      list-style-type: disc;
+    }
+
+    .tips-list li {
+      margin-bottom: 3px;
+    }
+
+    .side-panel {
+      font-size: 13px;
+      background: #f8f9ff;
+      border-radius: 10px;
+      padding: 12px;
+      border: 1px solid #d7defc;
+    }
+
+    .side-panel h3 {
+      margin-top: 0;
+      font-size: 15px;
+      color: #23395d;
+    }
+
+    .side-panel ul {
+      padding-left: 18px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+
+    .side-panel li {
+      margin-bottom: 4px;
+    }
+
+    .example-box {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 8px;
+      border: 1px dashed #c7cfe8;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .level-tag {
+      font-size: 11px;
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #23395d;
+      color: white;
+      margin-left: 6px;
+    }
+
+    /* Score styles */
+    .score-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 10px;
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #c7cfe8;
+      margin-bottom: 8px;
+    }
+
+    .score-number {
+      font-size: 26px;
+      font-weight: bold;
+      color: #23395d;
+      min-width: 70px;
+      text-align: center;
+    }
+
+    .score-label {
+      font-size: 13px;
+      color: #333;
+    }
+
+    .score-bar {
+      width: 100%;
+      height: 10px;
+      background: #e1e5ff;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .score-bar-inner {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff5252, #ffca28, #4caf50);
+      transition: width 0.4s ease;
+    }
+
+    .score-level-text {
+      font-size: 11px;
+      color: #555;
+      margin-top: 2px;
+    }
+
+    .error-word {
+      color: #c62828;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with Canvas -->
+  <canvas id="headerCanvas" width="1000" height="120"></canvas>
+
+  <div class="container">
+    <!-- Left: Student writing + feedback -->
+    <div>
+      <h2>
+        My Daily Routine
+        <span class="level-tag">Level A1 – First person (I)</span>
+      </h2>
+
+      <p class="instructions">
+        Write a short paragraph about your daily routine in <strong>first person</strong>, using
+        <strong>present simple</strong> (I get up, I have breakfast, I go to school…). Then click
+        <strong>“Check my paragraph”</strong> to see a basic correction, your <strong>A1 score</strong>, and highlighted errors in red.
+      </p>
+
+      <textarea id="paragraphInput" placeholder="Example: I wake up at 6:30. I get up and take a shower. I have breakfast with my family. Then I go to school..."></textarea>
+
+      <div class="buttons">
+        <button class="primary" onclick="checkParagraph()">Check my paragraph</button>
+        <button class="secondary" onclick="clearAll()">Clear</button>
+        <button class="secondary" onclick="loadStarter()">Load simple model</button>
+      </div>
+
+      <div id="feedback" class="feedback-box" style="display:none;"></div>
+    </div>
+
+    <!-- Right: Support panel with prompts and examples -->
+    <div class="side-panel">
+      <h3>Guiding questions (help for A1)</h3>
+      <ul>
+        <li>What time do you <strong>wake up</strong> and <strong>get up</strong>?</li>
+        <li>When do you <strong>have breakfast</strong>, <strong>lunch</strong>, and <strong>dinner</strong>?</li>
+        <li>Do you <strong>go to school</strong> or <strong>go to work</strong>?</li>
+        <li>What do you <strong>do in the afternoon</strong>?</li>
+        <li>What time do you <strong>go to bed</strong>?</li>
+      </ul>
+
+      <h3>Useful time words</h3>
+      <ul>
+        <li>every day, in the morning, in the afternoon, at night</li>
+        <li>always, usually, sometimes, never</li>
+      </ul>
+
+      <div class="example-box">
+        <strong>Mini example (A1):</strong><br />
+        I usually wake up at 6:30. I get up and take a shower. I have breakfast with my family.
+        Then I go to school. In the afternoon I do my homework and I watch TV. I go to bed at 10:00.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --------- Canvas header ---------
+    function drawHeader() {
+      const canvas = document.getElementById('headerCanvas');
+      if (!canvas.getContext) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // Background gradient
+      const grad = ctx.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, '#3f6df6');
+      grad.addColorStop(1, '#00bcd4');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Soft circles
+      ctx.globalAlpha = 0.25;
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(140, 40, 60, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(860, 90, 50, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.globalAlpha = 1;
+
+      // Title
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 32px Arial';
+      ctx.fillText('Daily Routine Writing Lab', 40, 60);
+
+      ctx.font = '16px Arial';
+      ctx.fillText('Practice writing about your day in English – Level A1', 40, 90);
+
+      // Small icons (simple clock and book)
+      // Clock
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(w - 180, 50, 22, 0, Math.PI * 2);
+      ctx.stroke();
+      // Hands
+      ctx.beginPath();
+      ctx.moveTo(w - 180, 50);
+      ctx.lineTo(w - 180, 38);
+      ctx.moveTo(w - 180, 50);
+      ctx.lineTo(w - 170, 58);
+      ctx.stroke();
+
+      // Book
+      ctx.beginPath();
+      ctx.rect(w - 120, 30, 60, 40);
+      ctx.moveTo(w - 90, 30);
+      ctx.lineTo(w - 90, 70);
+      ctx.stroke();
+    }
+
+    // Simple HTML escape (for showing original text)
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, function(m) {
+        return map[m];
+      });
+    }
+
+    // Highlight errors in red in the original paragraph
+    function highlightErrors(original, errorTokens) {
+      let html = escapeHtml(original);
+
+      // highlight specific tokens (spelling/grammar)
+      errorTokens.forEach(pat => {
+        if (!pat) return;
+        const escaped = pat.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const re =
+          pat.indexOf(' ') >= 0
+            ? new RegExp(escaped, 'gi')
+            : new RegExp('\\b' + escaped + '\\b', 'gi');
+        html = html.replace(re, function(match) {
+          return '<span class="error-word">' + match + '</span>';
+        });
+      });
+
+      // highlight lowercase "i" as pronoun (extra safety)
+      html = html.replace(/\bi\b/g, function(match) {
+        return '<span class="error-word">' + match + '</span>';
+      });
+
+      return html;
+    }
+
+    // --------- Basic A1 checker & scoring ---------
+    function checkParagraph() {
+      const inputEl = document.getElementById('paragraphInput');
+      const feedbackEl = document.getElementById('feedback');
+      let text = inputEl.value.trim();
+
+      if (!text) {
+        feedbackEl.style.display = 'block';
+        feedbackEl.innerHTML =
+          '<div class="feedback-title">Feedback</div>' +
+          '<div class="feedback-section">Please write your daily routine first 😊.</div>';
+        return;
+      }
+
+      let original = text;
+      let corrected = text;
+
+      // Normalize spaces and line breaks
+      corrected = corrected.replace(/\s+/g, ' ').trim();
+
+      // 1. Capitalize "i" -> "I"
+      corrected = corrected.replace(/\bi\b/g, 'I');
+      corrected = corrected.replace(/\bi\'m\b/gi, "I'm");
+
+      // 2. Build cleaner sentences: capitalize first letter, add a final period if missing.
+      const parts = corrected.split(/([.!?])/);
+      let sentences = [];
+      for (let i = 0; i < parts.length; i += 2) {
+        let s = parts[i];
+        if (!s || !s.trim()) continue;
+        let punct = parts[i + 1] && /[.!?]/.test(parts[i + 1]) ? parts[i + 1] : '.';
+        s = s.trim();
+        s = s.charAt(0).toUpperCase() + s.slice(1);
+        sentences.push(s + punct);
+      }
+      if (sentences.length > 0) {
+        corrected = sentences.join(' ');
+      } else {
+        corrected = corrected.charAt(0).toUpperCase() + corrected.slice(1);
+        if (!/[.!?]$/.test(corrected)) corrected += '.';
+      }
+
+      // Very small dictionary of common spelling mistakes
+      const spellingFixes = [
+        { wrong: 'breakfeast', right: 'breakfast' },
+        { wrong: 'luch', right: 'lunch' },
+        { wrong: 'dinne', right: 'dinner' },
+        { wrong: 'schoool', right: 'school' },
+        { wrong: 'scholl', right: 'school' },
+        { wrong: 'brekfast', right: 'breakfast' },
+        { wrong: 'brakefast', right: 'breakfast' },
+        { wrong: 'reades', right: 'read' },
+        { wrong: 'medias', right: 'media' }
+      ];
+
+      // Grammar patterns A1 – más detallados
+      const grammarPatterns = [
+        { re: /\bI is\b/gi,
+          message: 'Use "I am" (not "I is").',
+          highlight: 'I is' },
+        { re: /\bI\s+(always|usually|often|sometimes|never)\s+has\b/gi,
+          message: 'Use "have" with I (for example: "I usually have breakfast").',
+          highlight: 'I usually has' },
+        { re: /\bI has\b/gi,
+          message: 'Use "I have" (not "I has").',
+          highlight: 'I has' },
+        { re: /\bI wakes\b/gi,
+          message: 'Use "I wake" (not "I wakes").',
+          highlight: 'I wakes' },
+        { re: /\bI goes\b/gi,
+          message: 'Use "I go" (not "I goes").',
+          highlight: 'I goes' },
+        { re: /\bI am go\b/gi,
+          message: 'Use "I go" or "I am going" (not "I am go").',
+          highlight: 'I am go' },
+        { re: /\bI am also study\b/gi,
+          message: 'Use "I also study" or "I am also studying".',
+          highlight: 'I am also study' },
+        { re: /\bI am study\b/gi,
+          message: 'Use "I study" or "I am studying" (not "I am study").',
+          highlight: 'I am study' },
+        { re: /\bI am play\b/gi,
+          message: 'Use "I play" or "I am playing" (not "I am play").',
+          highlight: 'I am play' },
+        { re: /\bsocial medias\b/gi,
+          message: 'Use "social media" (uncountable) instead of "social medias".',
+          highlight: 'social medias' }
+      ];
+
+      // Apply spelling fixes to corrected text
+      spellingFixes.forEach(pair => {
+        const re = new RegExp('\\b' + pair.wrong + '\\b', 'gi');
+        corrected = corrected.replace(re, pair.right);
+      });
+
+      // Apply grammar corrections to corrected text
+      const grammarCorrections = [
+        { re: /\bI is\b/gi, rep: 'I am' },
+        { re: /\bI\s+(always|usually|often|sometimes|never)\s+has\b/gi, rep: 'I $1 have' },
+        { re: /\bI has\b/gi, rep: 'I have' },
+        { re: /\bI wakes\b/gi, rep: 'I wake' },
+        { re: /\bI goes\b/gi, rep: 'I go' },
+        { re: /\bI am go\b/gi, rep: 'I go' },
+        { re: /\bI am also study\b/gi, rep: 'I also study' },
+        { re: /\bI am study\b/gi, rep: 'I am studying' },
+        { re: /\bI am play\b/gi, rep: 'I am playing' },
+        { re: /\bsocial medias\b/gi, rep: 'social media' }
+      ];
+      grammarCorrections.forEach(rule => {
+        corrected = corrected.replace(rule.re, rule.rep);
+      });
+
+      // ------- Simple feedback messages -------
+      let feedbackMessages = [];
+      let errorDetails = [];
+      let errorTokens = [];
+
+      // Word count
+      const words = corrected.split(/\s+/).filter(Boolean);
+      const wordCount = words.length;
+
+      // Use of first person "I"
+      const usesI = /\bI\b/.test(corrected);
+
+      // Time words and routine verbs
+      const timeWords = [
+        'every day',
+        'everyday',
+        'in the morning',
+        'in the afternoon',
+        'at night',
+        'always',
+        'usually',
+        'sometimes',
+        'never'
+      ];
+
+      const routineVerbs = [
+        'wake up',
+        'get up',
+        'have breakfast',
+        'go to school',
+        'go to work',
+        'study',
+        'have lunch',
+        'have dinner',
+        'go to bed',
+        'brush my teeth',
+        'take a shower',
+        'watch tv'
+      ];
+
+      const usedTime = timeWords.filter(v => new RegExp(v, 'i').test(corrected));
+      const usedVerbs = routineVerbs.filter(v => new RegExp(v, 'i').test(corrected));
+
+      // Basic "issues" count
+      let issuesCount = 0;
+
+      // Lowercase "i" in original
+      const lowerIRegex = /\bi\b/g;
+      let lowerMatch;
+      while ((lowerMatch = lowerIRegex.exec(original)) !== null) {
+        issuesCount += 1;
+        const start = Math.max(0, lowerMatch.index - 15);
+        const end = Math.min(original.length, lowerMatch.index + 15);
+        const snippet = original.slice(start, end);
+        errorDetails.push('Use capital <strong>I</strong> instead of "i" in: "<em>' + escapeHtml(snippet) + '</em>".');
+      }
+
+      // Punctuation at the end
+      if (!/[.!?]$/.test(original.trim())) {
+        issuesCount += 1;
+        errorDetails.push('Add a period or full stop at the end of your paragraph.');
+      }
+
+      // Sentences without punctuation
+      const roughSentences = original.split(/[\n]/).filter(s => s.trim().length > 0);
+      let countNoPunctLines = 0;
+      roughSentences.forEach(s => {
+        if (!/[.!?]$/.test(s.trim())) {
+          if (countNoPunctLines < 2) {
+            errorDetails.push(
+              'This sentence probably needs a period at the end: "<em>' + escapeHtml(s.trim()) + '</em>".'
+            );
+          }
+          countNoPunctLines++;
+        }
+      });
+      if (countNoPunctLines > 0) {
+        issuesCount += Math.min(countNoPunctLines, 3);
+      }
+
+      // Spelling errors in original
+      spellingFixes.forEach(pair => {
+        const re = new RegExp('\\b' + pair.wrong + '\\b', 'gi');
+        let m;
+        while ((m = re.exec(original)) !== null) {
+          issuesCount += 1;
+          const start = Math.max(0, m.index - 15);
+          const end = Math.min(original.length, m.index + 15);
+          const snippet = original.slice(start, end);
+          errorDetails.push(
+            'Spelling: write "<strong>' +
+              pair.right +
+              '</strong>" (not "<span class="error-word">' +
+              escapeHtml(m[0]) +
+              '</span>") in: "<em>' +
+              escapeHtml(snippet) +
+              '</em>".'
+          );
+          if (!errorTokens.includes(pair.wrong)) {
+            errorTokens.push(pair.wrong);
+          }
+        }
+      });
+
+      // Grammar pattern errors
+      grammarPatterns.forEach(p => {
+        let m;
+        while ((m = p.re.exec(original)) !== null) {
+          issuesCount += 1;
+          const start = Math.max(0, m.index - 15);
+          const end = Math.min(original.length, m.index + 25);
+          const snippet = original.slice(start, end);
+          errorDetails.push(p.message + ' Example: "<em>' + escapeHtml(snippet) + '</em>".');
+          if (!errorTokens.includes(p.highlight)) {
+            errorTokens.push(p.highlight);
+          }
+        }
+      });
+
+      // ------------- SCORING (A1 strict: 0–100) -------------
+      let lengthScore = 0;
+      if (wordCount <= 10) lengthScore = 5;
+      else if (wordCount <= 20) lengthScore = 12;
+      else if (wordCount <= 30) lengthScore = 18;
+      else if (wordCount <= 60) lengthScore = 22;
+      else lengthScore = 20; // muy largo para A1
+
+      let grammarScore = 40 - issuesCount * 6; // penaliza un poco más
+      if (!usesI) {
+        grammarScore -= 10;
+      }
+      if (grammarScore < 0) grammarScore = 0;
+      if (grammarScore > 40) grammarScore = 40;
+
+      const vocabHits = usedTime.length + usedVerbs.length;
+      let vocabScore = 0;
+      if (vocabHits === 0) vocabScore = 5;
+      else if (vocabHits <= 2) vocabScore = 12;
+      else if (vocabHits <= 4) vocabScore = 18;
+      else vocabScore = 20;
+
+      let totalScore = lengthScore + grammarScore + vocabScore; // máx 82 aprox (A1 estricto)
+      if (totalScore > 100) totalScore = 100;
+      if (totalScore < 0) totalScore = 0;
+      const totalScoreRounded = Math.round(totalScore);
+
+      let levelLabel = '';
+      if (totalScoreRounded < 30) {
+        levelLabel = 'A1– (muy básico, necesita mucha ayuda).';
+      } else if (totalScoreRounded < 50) {
+        levelLabel = 'A1– / A1 inicial: se entiende con dificultad y tiene varios errores.';
+      } else if (totalScoreRounded < 70) {
+        levelLabel = 'A1 medio: en general se entiende, pero aún hay errores frecuentes.';
+      } else {
+        levelLabel = 'A1 alto: claro y comprensible, con pocos errores básicos.';
+      }
+
+      // Tips generales
+      if (wordCount < 30) {
+        feedbackMessages.push(
+          'Try to write at least <strong>30 words</strong> about your day. Now you wrote: <strong>' +
+            wordCount +
+            '</strong> words.'
+        );
+      } else {
+        feedbackMessages.push(
+          'Great! You wrote <strong>' + wordCount + '</strong> words. That is a good paragraph length for A1.'
+        );
+      }
+
+      if (!usesI) {
+        feedbackMessages.push(
+          'Remember to use <strong>"I"</strong> because you are talking about <strong>your</strong> routine.'
+        );
+      }
+
+      if (usedTime.length === 0) {
+        feedbackMessages.push(
+          'Try to add time words like <em>every day</em>, <em>in the morning</em>, <em>usually</em>, or <em>sometimes</em>.'
+        );
+      }
+
+      if (usedVerbs.length < 3) {
+        feedbackMessages.push(
+          'Add more daily actions like <em>I wake up</em>, <em>I have breakfast</em>, <em>I go to school</em>, <em>I go to bed</em>…'
+        );
+      } else {
+        feedbackMessages.push(
+          'Good! I can see daily routine actions like: <strong>' + usedVerbs.join(', ') + '</strong>.'
+        );
+      }
+
+      if (issuesCount > 0) {
+        feedbackMessages.push(
+          'Check the words or parts in <span class="error-word">red</span>. They show basic A1 problems (capital <strong>I</strong>, verb forms with <strong>I</strong>, spelling of <em>breakfast</em>, <em>read</em>, <em>social media</em>, etc.).'
+        );
+      }
+
+      // Build feedback HTML
+      let html = '<div class="feedback-title">A1 Writing Feedback</div>';
+
+      // Score box
+      html +=
+        '<div class="score-box">' +
+        '<div class="score-number">' + totalScoreRounded + '%</div>' +
+        '<div style="flex:1;">' +
+        '<div class="score-label"><strong>Estimated A1 writing score</strong> (A1– to A1 high)</div>' +
+        '<div class="score-bar"><div class="score-bar-inner" style="width:' + totalScoreRounded + '%;"></div></div>' +
+        '<div class="score-level-text">' + levelLabel + '</div>' +
+        '</div></div>';
+
+      html += '<div class="feedback-section"><strong>1. Tips for your paragraph:</strong>';
+      html += '<ul class="tips-list">';
+      feedbackMessages.forEach(msg => {
+        html += '<li>' + msg + '</li>';
+      });
+      html += '</ul></div>';
+
+      // Error details box
+      html += '<div class="feedback-section"><strong>2. Detalle de errores detectados (spelling / grammar):</strong>';
+      if (errorDetails.length > 0) {
+        html += '<ul class="tips-list">';
+        errorDetails.forEach(e => {
+          html += '<li>' + e + '</li>';
+        });
+        html += '</ul>';
+      } else {
+        html += '<div style="font-size:13px;">No clear spelling or basic grammar problems detected for A1 level. Good job!</div>';
+      }
+      html += '</div>';
+
+      // Original with highlights
+      html += '<div class="feedback-section"><strong>3. Your paragraph with errors highlighted:</strong><br>' +
+        '<span style="font-size:13px;">(Words or parts in <span class="error-word">red</span> may have a problem.)</span><br>' +
+        highlightErrors(original, errorTokens) + '</div>';
+
+      // Suggested correction
+      html += '<div class="feedback-section"><strong>4. Suggested basic correction (A1 level):</strong><br>' +
+        corrected + '</div>';
+
+      html += '<div class="feedback-section" style="font-size:12px;color:#555;margin-top:6px;">' +
+        '<em>Note:</em> This tool gives an <strong>approximate A1–A1 score</strong>. A teacher can always give more precise feedback about ideas and coherence.' +
+        '</div>';
+
+      feedbackEl.style.display = 'block';
+      feedbackEl.innerHTML = html;
+    }
+
+    // Clear everything
+    function clearAll() {
+      document.getElementById('paragraphInput').value = '';
+      const feedbackEl = document.getElementById('feedback');
+      feedbackEl.style.display = 'none';
+      feedbackEl.innerHTML = '';
+    }
+
+    // Load a simple model paragraph
+    function loadStarter() {
+      const sample =
+        'I usually wake up at 6:30. I get up and take a shower. I have breakfast with my family. ' +
+        'Then I go to school at 7:30. In the afternoon I do my homework and I play games. ' +
+        'At night I watch TV and I go to bed at 10:00.';
+      document.getElementById('paragraphInput').value = sample;
+    }
+
+    // Init
+    window.onload = drawHeader;
+  </script>
+</body>
+</html>
